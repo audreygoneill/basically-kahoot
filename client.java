@@ -10,9 +10,9 @@ import java.util.*;
 //Referenced https://howtodoinjava.com/library/json-simple-read-write-json-examples/
 public class client
 {
-    private static JSONObject writeQuestion(JSONArray quiz, String question, char tfAnswer){
-        Scanner sc = new Scanner(System.in);
+    public static Scanner sc = new Scanner(System.in);
 
+    private static JSONObject writeTfQuestion(String question, String tfAnswer){
         JSONObject q = new JSONObject();
 
         q.put("Type", "TF");
@@ -21,9 +21,7 @@ public class client
         return q;
     }
 
-    private static JSONObject writeQuestion(JSONArray quiz, String question, char MCAnswer, String a, String b, String c, String d) {
-        Scanner sc = new Scanner(System.in);
-
+    private static JSONObject writeMcQuestion(String question, String MCAnswer, String a, String b, String c, String d) {
         JSONObject q = new JSONObject();
 
         q.put("Type", "Multiple Choice");
@@ -39,9 +37,7 @@ public class client
         return q;
     }
 
-    private static JSONObject writeQuestion(JSONArray quiz, String question, String answer){
-        Scanner sc = new Scanner(System.in);
-
+    private static JSONObject writeBlankQuestion(String question, String answer){
         JSONObject q = new JSONObject();
 
         q.put("Type", "Fill in the Blank");
@@ -51,48 +47,46 @@ public class client
     }
 
     private static JSONArray checkQuestion(JSONArray quiz, String input){
-        Scanner sc = new Scanner(System.in);
 
         if (input.equals("tf")) {
             System.out.println("Enter your question:");
-            String question = sc.nextLine();
+            String question = sc.nextLine().toLowerCase().trim();
             System.out.println("Enter the answer, T or F:");
-            char answer = sc.nextLine().charAt(0);
+            String answer = sc.nextLine().toLowerCase();
 
-            quiz.add(writeQuestion(quiz, question, answer));
+            quiz.add(writeTfQuestion(question, answer));
         }
 
         if (input.equals("mc")) {
             System.out.println("Enter your question:");
-            String question = sc.nextLine();
+            String question = sc.nextLine().toLowerCase().trim();
             System.out.println("Enter choice A:");
-            String a = sc.nextLine();
+            String a = sc.nextLine().toLowerCase().trim();
             System.out.println("Enter choice B:");
-            String b = sc.nextLine();
+            String b = sc.nextLine().toLowerCase().trim();
             System.out.println("Enter choice C:");
-            String c = sc.nextLine();
+            String c = sc.nextLine().toLowerCase().trim();
             System.out.println("Enter choice D:");
-            String d = sc.nextLine();
+            String d = sc.nextLine().toLowerCase().trim();
             System.out.println("Enter the letter of the answer");
-            char answer = sc.nextLine().charAt(0);
+            String answer = sc.nextLine().toLowerCase().trim();
 
-            quiz.add(writeQuestion(quiz, question, answer, a, b, c, d));
+            quiz.add(writeMcQuestion(question, answer, a, b, c, d));
         }
 
         if (input.equals("blank")) {
             System.out.println("Enter your question:");
-            String question = sc.nextLine();
+            String question = sc.nextLine().toLowerCase().trim();
             System.out.println("Enter the answer:");
-            String answer = sc.nextLine();
+            String answer = sc.nextLine().toLowerCase().trim();
 
-            quiz.add(writeQuestion(quiz, question, answer));
+            quiz.add(writeBlankQuestion(question, answer));
         }
 
         return quiz;
     }
 
     private static String checkQuestionType() {
-        Scanner sc = new Scanner(System.in);
 
         System.out.println("For True / False : Enter TF");
         System.out.println("For Multiple Choice : Enter MC");
@@ -120,12 +114,15 @@ public class client
             }
         }
 
+        JSONObject output = new JSONObject();
+        output.put("Questions: ",quiz);
+
         //Writes quiz JSON file
         FileWriter file = new FileWriter("quiz.JSON");
         try {
-            file.write(quiz.toJSONString());
+            file.write(output.toJSONString());
             System.out.println("Successfully written quiz!");
-            System.out.println("\nJSON Array: " + quiz);
+            System.out.println(quiz);
 
         } catch (IOException e) {
             e.printStackTrace();
