@@ -51,7 +51,6 @@ public class readQuiz { //this class will take the JSON file quiz created in wri
         //format the quiz to be more aesthetically pleasing
         //created a method to ask the user what kind of questions they want to answer (just mc, just blank, all, etc)
         //list the multiple choice options so that the user sees a,b,c,d and knows to answer with a letter
-        //maybe print instructions to the screen before the quiz so that it is more user friendly
-
+        //print out results
     }
 }
