@@ -13,9 +13,9 @@ import org.json.simple.parser.*;
 import java.util.Collections;
 
 
-public class readQuiz { //this class will take the JSON file quiz created in client.java and read it out to the user 1 by 1
+public class readQuiz { //this class will take the JSON file quiz created in writeQuiz.java and read it out to the user 1 by 1
 
-    public static void main(String[] args) throws IOException, ParseException {
+    public static void readQuiz() throws IOException, ParseException {
         // parsing file "JSONExample.json"
         Object obj = new JSONParser().parse(new FileReader("quiz.JSON")); //read the previously created quiz
 
