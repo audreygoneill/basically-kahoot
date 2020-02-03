@@ -27,13 +27,13 @@ public class readQuiz { //this class will take the JSON file quiz created in wri
         Collections.shuffle(quiz); //randomize question order
 
         System.out.print("Welcome to the quiz! Please follow these directions:\nFor \"TF\" questions, answer by typing T for true or F for false.\n"
-        + "If a question is labelled \"Multiple Choice,\" answer A,B,C or D.\nLastly, for \"Fill in the Blank\" questions, just type out the answer.\n"
+        + "If a question is labelled \"Multiple Choice,\" answer A, B, C or D.\nLastly, for \"Fill in the Blank\" questions, just type out the answer.\n"
                 + "Hit enter to move on to the next question. Good Luck!\n\n");
 
         quiz.forEach(item -> { //iterate through questions
             JSONObject x = (JSONObject) item;
             System.out.println(x.get("Type"));
-            System.out.println("Question: " + x.get("Question"));
+            System.out.println(x.get("Question"));
             if (x.get("Type").equals("Multiple Choice")){
                 JSONArray choices = (JSONArray) x.get("Choices");
                 choices.forEach(choice -> {
