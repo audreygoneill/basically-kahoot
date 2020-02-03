@@ -69,7 +69,7 @@ public class writeQuiz
             System.out.println("Enter the letter of the answer");
             String answer = sc.nextLine().toLowerCase().trim();
 
-            quiz.add(writeMcQuestion(question, answer, a, b, c, d));
+            quiz.add(writeMcQuestion(question, answer, "a. " + a, "b. " + b, "c. " + c, "d. " + d));
         }
 
         if (input.equals("blank")) {

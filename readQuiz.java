@@ -35,7 +35,10 @@ public class readQuiz { //this class will take the JSON file quiz created in wri
             System.out.println(x.get("Type"));
             System.out.println("Question: " + x.get("Question"));
             if (x.get("Type").equals("Multiple Choice")){
-                System.out.println(x.get("Choices"));
+                JSONArray choices = (JSONArray) x.get("Choices");
+                choices.forEach(choice -> {
+                    System.out.println(choice);
+                });
             }
             System.out.println("Answer here: ");
             String userAnswer = sc.nextLine().toLowerCase().trim(); //take user answer
