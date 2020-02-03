@@ -12,6 +12,6 @@ public class client {
        readQuiz read = new readQuiz();
        read.readQuiz();
 
-       //let client control when quiz starts and possibly allow to quiz early
+       //let client control when quiz starts
     }
 }
