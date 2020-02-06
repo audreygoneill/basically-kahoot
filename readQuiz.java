@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
-
+import java.io.IOException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
@@ -15,7 +15,7 @@ import java.util.Collections;
 
 public class readQuiz { //this class will take the JSON file quiz created in writeQuiz.java and read it out to the user 1 by 1
 
-    public static void readQuiz() throws IOException, ParseException {
+    public static JSONArray readQuiz(String name) throws IOException, ParseException {
         // parsing file "JSONExample.json"
         Object obj = new JSONParser().parse(new FileReader("quiz.JSON")); //read the previously created quiz
 
@@ -30,6 +30,8 @@ public class readQuiz { //this class will take the JSON file quiz created in wri
         + "If a question is labelled \"Multiple Choice,\" answer A, B, C or D.\nLastly, for \"Fill in the Blank\" questions, just type out the answer.\n"
                 + "Hit enter to move on to the next question. Good Luck!\n\n");
 
+        JSONArray results = new JSONArray();
+
         quiz.forEach(item -> { //iterate through questions
             JSONObject x = (JSONObject) item;
             System.out.println(x.get("Type"));
@@ -42,12 +44,23 @@ public class readQuiz { //this class will take the JSON file quiz created in wri
             }
             System.out.println("Answer here: ");
             String userAnswer = sc.nextLine().toLowerCase().trim(); //take user answer
+
+            //Create record of question and correct answer
+            JSONObject question = new JSONObject();
+            question.put("Question", x.get("Question"));
+            question.put("Answer", x.get("Answer"));
+            question.put("Response", userAnswer);
+            results.
+
             if (userAnswer.equals(x.get("Answer"))){ //output whether user answered correctly
                 System.out.println("Correct!\n");
+                results.add("Correct", 1);
             }
             else {
                 System.out.println("Incorrect :(\n");
             }
+
+            results.add(question);
         });
 
         //this is really basic so here's a list of thing i want to work on
@@ -56,4 +69,9 @@ public class readQuiz { //this class will take the JSON file quiz created in wri
         //list the multiple choice options so that the user sees a,b,c,d and knows to answer with a letter
         //print out results
     }
+
+    public static void scoreQuiz(String answer) throws IOException {
+
+    }
+
 }
