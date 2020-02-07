@@ -1,6 +1,6 @@
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -10,18 +10,20 @@ public class writeQuiz
 {
     public static Scanner sc = new Scanner(System.in);
 
-    private static JSONObject writeTfQuestion(String question, String tfAnswer){
+    private static JSONObject writeTfQuestion(int number, String question, String tfAnswer){
         JSONObject q = new JSONObject();
 
+        q.put("Number", number);
         q.put("Type", "TF");
         q.put("Question", question);
         q.put("Answer", tfAnswer);
         return q;
     }
 
-    private static JSONObject writeMcQuestion(String question, String MCAnswer, String a, String b, String c, String d) {
+    private static JSONObject writeMcQuestion(int number, String question, String MCAnswer, String a, String b, String c, String d) {
         JSONObject q = new JSONObject();
 
+        q.put("Number", number);
         q.put("Type", "Multiple Choice");
         q.put("Question", question);
         q.put("Answer", MCAnswer);
@@ -35,24 +37,29 @@ public class writeQuiz
         return q;
     }
 
-    private static JSONObject writeBlankQuestion(String question, String answer){
+    private static JSONObject writeBlankQuestion(int number, String question, String answer){
         JSONObject q = new JSONObject();
 
+        q.put("Number", number);
         q.put("Type", "Fill in the Blank");
         q.put("Question", question);
         q.put("Answer", answer);
         return q;
     }
 
-    private static JSONArray checkQuestion(JSONArray quiz, String input){
+    private static JSONArray checkQuestion(int number, JSONArray quiz, String input){
 
         if (input.equals("tf")) {
             System.out.println("Enter your question:");
             String question = sc.nextLine().toLowerCase().trim();
             System.out.println("Enter the answer, T or F:");
             String answer = sc.nextLine().toLowerCase();
+            if (!answer.equals("t") && !answer.equals("f")) {
+                System.out.println("Not a valid answer. Enter T or F:");
+                answer = sc.nextLine().toLowerCase();
+            }
 
-            quiz.add(writeTfQuestion(question, answer));
+            quiz.add(writeTfQuestion(number, question, answer));
         }
 
         if (input.equals("mc")) {
@@ -69,7 +76,7 @@ public class writeQuiz
             System.out.println("Enter the letter of the answer");
             String answer = sc.nextLine().toLowerCase().trim();
 
-            quiz.add(writeMcQuestion(question, answer, "a. " + a, "b. " + b, "c. " + c, "d. " + d));
+            quiz.add(writeMcQuestion(number, question, answer, "a. " + a, "b. " + b, "c. " + c, "d. " + d));
         }
 
         if (input.equals("blank")) {
@@ -78,7 +85,7 @@ public class writeQuiz
             System.out.println("Enter the answer:");
             String answer = sc.nextLine().toLowerCase().trim();
 
-            quiz.add(writeBlankQuestion(question, answer));
+            quiz.add(writeBlankQuestion(number, question, answer));
         }
 
         return quiz;
@@ -97,17 +104,23 @@ public class writeQuiz
     }
 
 
-    public static JSONObject generateQuiz() throws IOException {
+    public static void generateQuiz() throws IOException {
         //Create the JSON Array quiz
         JSONArray quiz = new JSONArray();
+        int number = 1;
 
         //Adds data to the quiz
         while (true) {
             String type = checkQuestionType();
-            if (type.equals("done")) {
+            if (!type.equals("tf") && !type.equals("mc") && !type.equals("blank") && !type.equals("done")) {
+                System.out.println("Invalid question type. Enter tf, mc, or blank.");
+            }
+            else if (type.equals("done")) {
                 break;
-            } else {
-                quiz = checkQuestion(quiz, type);
+            }
+            else {
+                quiz = checkQuestion(number, quiz, type);
+                number++;
             }
         }
 
@@ -127,8 +140,5 @@ public class writeQuiz
             file.flush();
             file.close();
         }
-        return output;
     }
-
-    //pretty printing
 }
