@@ -51,6 +51,10 @@ public class writeQuiz
             String question = sc.nextLine().toLowerCase().trim();
             System.out.println("Enter the answer, T or F:");
             String answer = sc.nextLine().toLowerCase();
+            if (!answer.equals("t") && !answer.equals("f")) {
+                System.out.println("Not a valid answer. Enter T or F:");
+                answer = sc.nextLine().toLowerCase();
+            }
 
             quiz.add(writeTfQuestion(question, answer));
         }
@@ -97,16 +101,20 @@ public class writeQuiz
     }
 
 
-    public static JSONObject generateQuiz() throws IOException {
+    public static void generateQuiz() throws IOException {
         //Create the JSON Array quiz
         JSONArray quiz = new JSONArray();
 
         //Adds data to the quiz
         while (true) {
             String type = checkQuestionType();
-            if (type.equals("done")) {
+            if (!type.equals("tf") && !type.equals("mc") && !type.equals("blank") && !type.equals("done")) {
+                System.out.println("Invalid question type. Enter tf, mc, or blank.");
+            }
+            else if (type.equals("done")) {
                 break;
-            } else {
+            }
+            else {
                 quiz = checkQuestion(quiz, type);
             }
         }
@@ -127,8 +135,5 @@ public class writeQuiz
             file.flush();
             file.close();
         }
-        return output;
     }
-
-    //pretty printing
 }
