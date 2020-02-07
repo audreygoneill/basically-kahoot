@@ -7,6 +7,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 import java.util.Collections;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class readQuiz { //this class will take the JSON file quiz created in writeQuiz.java and read it out to the user 1 by 1
@@ -30,9 +31,10 @@ public class readQuiz { //this class will take the JSON file quiz created in wri
 
         JSONArray results = new JSONArray();
 
+        AtomicInteger countTotal = new AtomicInteger(0);
+        AtomicInteger countCorrect = new AtomicInteger(0);
+
         quiz.forEach(item -> { //iterate through questions
-            int countCorrect;
-            int countTotal;
 
             JSONObject x = (JSONObject) item;
             System.out.println(x.get("Type"));
@@ -50,21 +52,34 @@ public class readQuiz { //this class will take the JSON file quiz created in wri
 
             //Create record of question, correct answer, and user answer
             JSONObject question = new JSONObject();
+            question.put("Number", x.get("Number"));
             question.put("Question", x.get("Question"));
             question.put("Answer", x.get("Answer"));
             question.put("Response", userAnswer);
 
             if (userAnswer.equals(x.get("Answer"))){ //output whether user answered correctly
                 System.out.println("Correct!\n");
+                countCorrect.getAndIncrement();
             }
             else {
                 System.out.println("Incorrect :(\n");
             }
 
+            countTotal.getAndIncrement();
             results.add(question);
             }
         );
 
+        double percent = (100*(countCorrect.doubleValue()/countTotal.doubleValue()));
+
+        System.out.println("You answered " + countCorrect + " out of " + countTotal + " questions correctly.");
+        System.out.println("That equals " + percent + " percent!");
+
+        JSONObject score = new JSONObject();
+        score.put("Total questions:", countTotal.doubleValue());
+        score.put("Total correct: ", countCorrect.doubleValue());
+        score.put("Percent correct: ", percent);
+        results.add(score);
         return results;
     }
 
