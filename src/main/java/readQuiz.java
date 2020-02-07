@@ -15,7 +15,7 @@ import java.util.Collections;
 
 public class readQuiz { //this class will take the JSON file quiz created in writeQuiz.java and read it out to the user 1 by 1
 
-    public static JSONArray readQuiz(String name) throws IOException, ParseException {
+    public static void readQuiz(String name) throws IOException, ParseException {
         // parsing file "JSONExample.json"
         Object obj = new JSONParser().parse(new FileReader("quiz.JSON")); //read the previously created quiz
 
@@ -50,11 +50,10 @@ public class readQuiz { //this class will take the JSON file quiz created in wri
             question.put("Question", x.get("Question"));
             question.put("Answer", x.get("Answer"));
             question.put("Response", userAnswer);
-            results.
 
             if (userAnswer.equals(x.get("Answer"))){ //output whether user answered correctly
                 System.out.println("Correct!\n");
-                results.add("Correct", 1);
+                //results.add("Correct", 1);
             }
             else {
                 System.out.println("Incorrect :(\n");
