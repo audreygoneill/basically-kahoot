@@ -11,21 +11,13 @@ repositories {
     mavenCentral()
 }
 
-sourceSets {
-    main {
-        java {
-            srcDir 'src/main/java'
-        }
-        resources {
-            srcDir 'libs'
-        }
-    }
+apply plugin : 'java'
+ext {
+    javaMainClass = '/Users/audreyoneill/Desktop/COMP330/basically-kahoot/src/main/java/client.java'
 }
 
-task runQuiz(dependsOn: 'classes', type: JavaExec) {
-    main = 'client'
-    classpath = sourceSets.main.runtimeClasspath
-    args = []
+application {
+    mainClassName = javaMainClass
 }
 
 dependencies {
