@@ -13,12 +13,12 @@ import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-//this class will take the JSON file quiz created in writeQuiz.java and read it out to the user 1 by 1
-public class readQuiz {
+//this class will take the JSON file quiz created in QuizGenerator.java and read it out to the user 1 by 1
+public class Quiz {
 
     private static Scanner sc = new Scanner(System.in);
 
-    public static JSONArray readQuiz(String name) throws IOException, ParseException {
+    public static JSONArray takeQuiz(String name) throws IOException, ParseException {
 
         // parsing file "quiz.json"
         Object obj = new JSONParser().parse(new FileReader("quiz.JSON"));
@@ -95,7 +95,7 @@ public class readQuiz {
         return results;
     }
 
-    public static void printResults(JSONArray results, String name) throws IOException {
+    private static void printResults(JSONArray results, String name) throws IOException {
         //Filename will be unique to the user's name
         String fileName = name + "_results.JSON";
         FileWriter file = new FileWriter(fileName);

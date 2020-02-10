@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.*;
 
 //Referenced https://howtodoinjava.com/library/json-simple-read-write-json-examples/
-public class writeQuiz
+public class QuizGenerator
 {
     private static Scanner sc = new Scanner(System.in);
 
