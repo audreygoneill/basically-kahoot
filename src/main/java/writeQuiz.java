@@ -8,7 +8,7 @@ import java.util.*;
 //Referenced https://howtodoinjava.com/library/json-simple-read-write-json-examples/
 public class writeQuiz
 {
-    public static Scanner sc = new Scanner(System.in);
+    private static Scanner sc = new Scanner(System.in);
 
     private static JSONObject writeTfQuestion(int number, String question, String tfAnswer){
         JSONObject q = new JSONObject();
@@ -47,6 +47,7 @@ public class writeQuiz
         return q;
     }
 
+    //Reads in all required components of question, then calls appropriate method to add that question and answer to JSONArray quiz
     private static JSONArray checkQuestion(int number, JSONArray quiz, String input){
 
         if (input.equals("tf")) {
@@ -54,6 +55,8 @@ public class writeQuiz
             String question = sc.nextLine().toLowerCase().trim();
             System.out.println("Enter the answer, T or F:");
             String answer = sc.nextLine().toLowerCase();
+
+            //Validates user input
             if (!answer.equals("t") && !answer.equals("f")) {
                 System.out.println("Not a valid answer. Enter T or F:");
                 answer = sc.nextLine().toLowerCase();
@@ -91,7 +94,9 @@ public class writeQuiz
         return quiz;
     }
 
-    public static String checkQuestionType() {
+
+    //Checks the question type and returns a string indicating question type
+    private static String checkQuestionType() {
 
         System.out.println("For True / False : Enter TF");
         System.out.println("For Multiple Choice : Enter MC");
@@ -107,11 +112,13 @@ public class writeQuiz
     public static void generateQuiz() throws IOException {
         //Create the JSON Array quiz
         JSONArray quiz = new JSONArray();
-        int number = 1;
+        int number = 1; //Counter to keep track of the number of each question
 
         //Adds data to the quiz
         while (true) {
             String type = checkQuestionType();
+
+            //Validates question type
             if (!type.equals("tf") && !type.equals("mc") && !type.equals("blank") && !type.equals("done")) {
                 System.out.println("Invalid question type. Enter tf, mc, or blank.");
             }
@@ -119,7 +126,10 @@ public class writeQuiz
                 break;
             }
             else {
+                //Calls checkQuestion method to enter all required information for the specified question type
                 quiz = checkQuestion(number, quiz, type);
+
+                //Increments number of question by 1
                 number++;
             }
         }
@@ -132,7 +142,6 @@ public class writeQuiz
         try {
             file.write(output.toJSONString());
             System.out.println("Successfully written quiz!");
-            System.out.println(quiz);
 
         } catch (IOException e) {
             e.printStackTrace();
