@@ -8,5 +8,5 @@ To compile and run program:
 4) $ gradle build
 5) $ cd build/libs
 6) $ ls
-7) $ java -jar basically-kahoot-1.0-SNAPSHOT.jar
+7) $ java -jar basically-kahoot-master-1.0-SNAPSHOT.jar
 8) Follow prompts in terminal to create your own quiz, take the quiz, and view results
