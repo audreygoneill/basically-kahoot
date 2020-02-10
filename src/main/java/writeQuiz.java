@@ -1,4 +1,5 @@
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.io.FileWriter;
@@ -136,11 +137,13 @@ public class writeQuiz
 
         JSONObject output = new JSONObject();
         output.put("Questions: ", quiz);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String finalOutput = gson.toJson(output);
 
         //Writes quiz JSON file
         FileWriter file = new FileWriter("quiz.JSON");
         try {
-            file.write(output.toJSONString());
+            file.write(finalOutput);
             System.out.println("Successfully written quiz!");
 
         } catch (IOException e) {
