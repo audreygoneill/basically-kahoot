@@ -11,13 +11,8 @@ repositories {
     mavenCentral()
 }
 
-apply plugin: 'java'
-ext {
-    javaMainClass = 'com.basically-kahoot.gradle.exec.client'
-}
-application {
-    mainClassName = javaMainClass
-}
+apply plugin: 'application'
+mainClassName = 'client'
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
