@@ -3,6 +3,9 @@
 import java.io.*;
 import java.util.Scanner;
 import java.io.IOException;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
@@ -97,8 +100,11 @@ public class readQuiz {
         String fileName = name + "_results.JSON";
         FileWriter file = new FileWriter(fileName);
 
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String finalOutput = gson.toJson(results);
+
         try {
-            file.write(results.toString());
+            file.write(finalOutput);
             System.out.println("Successfully written results!");
 
         } catch (IOException e) {
@@ -113,7 +119,7 @@ public class readQuiz {
             System.out.println("Your results have been recorded. Goodbye!");
         }
         else {
-            System.out.println(results);
+            System.out.println(finalOutput);
         }
     }
 }
