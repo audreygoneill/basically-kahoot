@@ -12,7 +12,7 @@ repositories {
 }
 
 apply plugin: 'application'
-mainClassName = 'client'
+mainClassName = 'client.java'
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
