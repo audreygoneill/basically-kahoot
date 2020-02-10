@@ -3,6 +3,8 @@ plugins {
     id 'application'
 }
 
+apply plugin: 'java'
+
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
@@ -11,13 +13,22 @@ repositories {
     mavenCentral()
 }
 
-apply plugin : 'java'
-ext {
-    javaMainClass = '/Users/audreyoneill/Desktop/COMP330/basically-kahoot/src/main/java/client.java'
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'libs'
+        }
+    }
 }
 
-application {
-    mainClassName = javaMainClass
+task runQuiz(dependsOn: 'classes', type: JavaExec) {
+    standardInput = System.in
+    main = 'client'
+    classpath = sourceSets.main.runtimeClasspath
+    args = []
 }
 
 dependencies {
