@@ -95,7 +95,7 @@ public class Quiz {
         return results;
     }
 
-    private static void printResults(JSONArray results, String name) throws IOException {
+    public static void printResults(JSONArray results, String name) throws IOException {
         //Filename will be unique to the user's name
         String fileName = name + "_results.JSON";
         FileWriter file = new FileWriter(fileName);
