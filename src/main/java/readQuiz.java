@@ -10,17 +10,19 @@ import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-public class readQuiz { //this class will take the JSON file quiz created in writeQuiz.java and read it out to the user 1 by 1
+//this class will take the JSON file quiz created in writeQuiz.java and read it out to the user 1 by 1
+public class readQuiz {
 
-    public static Scanner sc = new Scanner(System.in);
+    private static Scanner sc = new Scanner(System.in);
 
     public static JSONArray readQuiz(String name) throws IOException, ParseException {
-        // parsing file "quiz.json"
-        Object obj = new JSONParser().parse(new FileReader("quiz.JSON")); //read the previously created quiz
 
-        JSONObject jo = (JSONObject) obj; //make object to parse with
-        int totalQuestions = 0;
-        int numberCorrect = 0;
+        // parsing file "quiz.json"
+        Object obj = new JSONParser().parse(new FileReader("quiz.JSON"));
+
+        JSONObject jo = (JSONObject) obj; //Make object to parse with
+        int totalQuestions = 0; //Counter to keep track of total number of quiz questions
+        int numberCorrect = 0; //Counter to keep track of total number of correct answers
 
         JSONArray quiz = (JSONArray) jo.get("Questions: "); //access the questions
         Collections.shuffle(quiz); //randomize question order
@@ -31,15 +33,18 @@ public class readQuiz { //this class will take the JSON file quiz created in wri
 
         JSONArray results = new JSONArray();
 
+        //Referenced https://stackoverflow.com/questions/28790784/java-8-preferred-way-to-count-iterations-of-a-lambda
         AtomicInteger countTotal = new AtomicInteger(0);
         AtomicInteger countCorrect = new AtomicInteger(0);
 
-        quiz.forEach(item -> { //iterate through questions
+        //iterate through questions
+        quiz.forEach(item -> {
 
             JSONObject x = (JSONObject) item;
             System.out.println(x.get("Type"));
             System.out.println(x.get("Question"));
 
+            //Print all options for a multiple choice question
             if (x.get("Type").equals("Multiple Choice")){
                 JSONArray choices = (JSONArray) x.get("Choices");
                 choices.forEach(choice -> {
@@ -48,7 +53,7 @@ public class readQuiz { //this class will take the JSON file quiz created in wri
             }
 
             System.out.println("Answer here: ");
-            String userAnswer = sc.nextLine().toLowerCase().trim(); //sanitize user answer
+            String userAnswer = sc.nextLine().toLowerCase().trim(); //Sanitize user answer
 
             //Create record of question, correct answer, and user answer
             JSONObject question = new JSONObject();
@@ -57,25 +62,29 @@ public class readQuiz { //this class will take the JSON file quiz created in wri
             question.put("Answer", x.get("Answer"));
             question.put("Response", userAnswer);
 
-            if (userAnswer.equals(x.get("Answer"))){ //output whether user answered correctly
+            //output whether user answered correctly
+            if (userAnswer.equals(x.get("Answer"))){
                 System.out.println("Correct!\n");
+                //Increment number of correctly answered questions by 1
                 countCorrect.getAndIncrement();
             }
             else {
                 System.out.println("Incorrect :(\n");
             }
 
+            //Increment total number of questions in quiz by 1
             countTotal.getAndIncrement();
             results.add(question);
             }
         );
 
+        //Calculate percent correct
         double percent = (100*(countCorrect.doubleValue()/countTotal.doubleValue()));
 
         System.out.println("You answered " + countCorrect + " out of " + countTotal + " questions correctly.");
         System.out.println("That equals " + percent + " percent!");
 
-        JSONObject score = new JSONObject();
+        JSONObject score = new JSONObject(); //Create new JSON object to store score
         score.put("Total questions:", countTotal.doubleValue());
         score.put("Total correct: ", countCorrect.doubleValue());
         score.put("Percent correct: ", percent);
@@ -84,11 +93,12 @@ public class readQuiz { //this class will take the JSON file quiz created in wri
     }
 
     public static void printResults(JSONArray results, String name) throws IOException {
+        //Filename will be unique to the user's name
         String fileName = name + "_results.JSON";
         FileWriter file = new FileWriter(fileName);
 
         try {
-            file.write(results.toJSONString());
+            file.write(results.toString());
             System.out.println("Successfully written results!");
 
         } catch (IOException e) {
