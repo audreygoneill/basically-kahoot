@@ -11,8 +11,22 @@ repositories {
     mavenCentral()
 }
 
-apply plugin: 'application'
-mainClassName = 'client.java'
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'libs'
+        }
+    }
+}
+
+task runQuiz(dependsOn: 'classes', type: JavaExec) {
+    main = 'client'
+    classpath = sourceSets.main.runtimeClasspath
+    args = []
+}
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
